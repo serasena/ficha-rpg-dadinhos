@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="styles.css">
+</link>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Ficha - Dadinhos RPG</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="character-header">
+        <h1 class="main-title center">Ficha de Jogador</h1>
+
+        <div id="turn-controls" class="item">
+            <button id="rewind-turn" class="action-btn" type="button" hidden>Voltar Rodada</button>
+            <button id="next-turn" class="action-btn" type="button">Avançar Rodada</button>
+        </div>
+
+    </div>
+
+    <form id="form-character" action="#" method="POST">
+
+        <div class="form-item name">
+            <input id="char-name" class="name-input" type="text" name="info-name" placeholder="Nome do Personagem" />
+        </div>
+
+        <div class="form-column">
+
+            <div id="character-info" class="form-item status">
+                <h3 class="item-title center">Status</h3>
+
+                <div class="item">
+                    <input id="char-level" class="value-big center" type="text" name="info-level" pattern="\d+" />
+                    <label class="info-text" for="level">Nível</label>
+                </div>
+
+                <div class="item">
+                    <div id="char-actual-health" class="health value-big center"></div>
+                    <p id="char-health-info" class="info-text"></p>
+                </div>
+
+                <div class="item">
+                    <div id="protection" class="value-big center"></div>
+                    <p class="info-text">Proteção</p>
+                </div>
+
+                <div class="calc-pv-container">
+                    <input id="set-pv-value" class="value-small center" type="number" value="0" />
+                    <button id="set-pv-btn" class="action-btn center" type="button" data-set="heal">Calcular</button>
+                </div>
+            </div>
+
+            <div id="character-armor" class="form-item armor">
+                <h3 class="item-title center">Armadura</h3>
+
+                <div class="armor-container container-item">
+                    <div class="container-subitem">
+                        <input class="armor-name item-name" name="armor-name" type="text"
+                            placeholder="Nome da Armadura" />
+                        <input class="armor-value value-small center" name="armor-protection" type="number" min="0"
+                            max="2" placeholder="0" value="0" />
+                        <button class="expand-btn" type="button">+</button>
+                    </div>
+                    <textarea class="armor-description hidden" name="armor-description"
+                        placeholder="Descrição"></textarea>
+                </div>
+            </div>
+
+            <div id="character-effects" class="form-item effects">
+                <h3 class="item-title center">Efeitos</h3>
+
+                <div id="effects" class="container"></div>
+                <button class="add-item-btn" type="button">+</button>
+            </div>
+
+            <div id="character-weapons" class="form-item weapons">
+                <h3 class="item-title center">Armas</h3>
+
+                <div id="weapons" class="container"></div>
+                <button class="add-item-btn" type="button">+</button>
+            </div>
+
+
+            <div id="character-skills" class="form-item skills">
+                <h3 class="item-title center">Habilidades</h3>
+
+                <div id="skills" class="container"></div>
+                <button class="add-item-btn" type="button">+</button>
+            </div>
+
+        </div>
+
+        <div class="form-column">
+
+            <div id="character-attributes" class="form-item attributes">
+                <h3 class="item-title center">Atributos</h3>
+
+                <div class="item attribute" data-attribute="strength">
+                    <input id="strength-value" class="attribute-value value-big center no-arrow" type="number" min="1"
+                        max="3" />
+                    <p class="info-text roll">Força</p>
+                </div>
+
+                <div class="item attribute" data-attribute="dexterity">
+                    <input id="dexterity-value" class="attribute-value value-big center no-arrow" type="number" min="1"
+                        max="3" />
+                    <p class="info-text roll">Destreza</p>
+                </div>
+
+                <div class="item attribute" data-attribute="intelligence">
+                    <input id="intelligence-value" class="attribute-value value-big center no-arrow" type="number"
+                        min="1" max="3" />
+                    <p class="info-text roll">Inteligência</p>
+                </div>
+
+                <div class="item attribute" data-attribute="charism">
+                    <input id="charism-value" class="attribute-value value-big center no-arrow" type="number" min="1"
+                        max="3" />
+                    <p class="info-text roll">Carisma</p>
+                </div>
+
+            </div>
+
+            <div id="character-inventory" class="form-item inventory">
+                <h3 class="item-title center">Inventário</h3>
+
+                <div id="inventory" class="container"></div>
+                <button class="add-item-btn" type="button">+</button>
+            </div>
+
+            <div id="character-additional-info" class="form-item description">
+                <h3 class="item-title center">Descrição</h3>
+                <textarea id="description" class="description-value" name="description"></textarea>
+            </div>
+
+        </div>
+    </form>
+</body>
+
+<div id="dice-roll" class="black-bg hidden">
+    <div class="dice-container">
+        <div class="dices-icon"></div>
+        <p class="dice-value message"></p>
+        <hr>
+        <h4 class="dice-result"></h4>
+        <p class="dice-value">Total</p>
+        <button class="action-btn">Fechar</button>
+    </div>
+</div>
+
+<!--
+    <div id="character-icon" class="form-item">
+        <figure class="avatar">
+            <img href="#" alt="avatar">
+        </figure>
+        <button type="button">Mudar Icone</button>
+    </div> 
+-->
+
+<script src="script.js"></script>
+
+</html>

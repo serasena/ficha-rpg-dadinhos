@@ -1,0 +1,38 @@
+{
+    "character": {
+        "info": {
+            "name": "",
+            "level": 1
+        },
+        "status": {
+            "actualHealth": 1,
+            "maxHealth": 1,
+            "protection": 1
+        },
+        "attributes": {
+            "strength": 1,
+            "dexterity": 1,
+            "intelligence": 1,
+            "charism": 1
+        },
+        "armor": {
+            "name": "",
+            "value": 0,
+            "description": ""
+        },
+        "effectsValues": {
+            "maxhealth": 0,
+            "protection": 0,
+            "strength": 0,
+            "dexterity": 0,
+            "intelligence": 0,
+            "charism": 0,
+            "movement": 0
+        },
+        "weapons": [],
+        "effects": [],
+        "skills": [],
+        "inventory": [],
+        "description": ""
+    }
+}

@@ -7,7 +7,6 @@
 <head>
     <meta charset="utf-8" />
     <title>Ficha - Dadinhos RPG</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
@@ -15,7 +14,30 @@
 
 <body>
 
-    <div class="character-header">
+    <section id="auth-panel">
+        <h2 class="item-title">Acessar Conta</h2>
+
+        <form id="auth-form">
+            <label class="info-text" for="auth-email">E-mail:</label>
+            <input class="item-name" type="email" id="auth-email" autocomplete="email" required>
+
+            <label class="info-text" for="auth-password">Senha:</label>
+            <input class="item-name" type="password" id="auth-password" autocomplete="current-password" required>
+
+            <button class="action-btn" type="submit" id="login-btn">Entrar</button>
+            <button class="action-btn" type="button" id="register-btn">Criar conta</button>
+        </form>
+
+        <p id="auth-message" role="status"></p>
+    </section>
+
+    <div id="user-panel" class="hidden">
+        <p class="info-text">Conta:</p>
+        <span id="user-email"></span>
+        <button class="action-btn" type="button" id="logout-btn">Sair</button>
+    </div>
+
+    <div class="character-header hidden">
         <h1 class="main-title center">Ficha de Jogador</h1>
 
         <div id="turn-controls" class="item">
@@ -25,7 +47,7 @@
 
     </div>
 
-    <form id="form-character" action="#" method="POST">
+    <form id="form-character" class="hidden" action="#" method="POST">
 
         <div class="form-item name">
             <input id="char-name" class="name-input" type="text" name="info-name" placeholder="Nome do Personagem" />
@@ -163,7 +185,6 @@
         <button type="button">Mudar Icone</button>
     </div> 
 -->
-
-<script src="script.js"></script>
+<script type="module" src="./script.js"></script>
 
 </html>

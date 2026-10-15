@@ -659,6 +659,46 @@ div.value-big {
     color: hsl(250 50% 50%);
 }
 
+/* Account Configuration */
+
+#auth-panel {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 2rem;
+    gap: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0 0 0;
+}
+
+#auth-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#auth-form .item-name {
+    height: 1.6rem;
+}
+
+#user-panel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    font-family: "MedievalSharp";
+    gap: 1rem;
+    margin: 1rem 0 0 0;
+}
+
+#user-panel p {
+    font-weight: bold;
+}
 
 @media screen and (max-width: 750px) {
     :root {

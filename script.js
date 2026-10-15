@@ -1,5 +1,23 @@
+import { auth, db } from "./firebase.js";
+
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+
+import {
+    doc,
+    getDoc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+
 // Forms Elements ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const form = document.getElementById("form-character");
+const header = document.querySelector(".character-header");
 
 const itemContainers = form.querySelectorAll(".container");
 
@@ -29,6 +47,7 @@ const attributesEl = form.querySelectorAll(".attribute");
 const descriptionEl = form.querySelector("#description");
 
 // Variables ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 const character = {
     info: {
         name: "",
@@ -65,7 +84,6 @@ const character = {
     skills: [],
     inventory: [],
     description: ""
-
 }
 
 const systemMetrics = {
@@ -88,13 +106,65 @@ const systemMetrics = {
         minValue: 1
     }
 }
+
+
+
+let currentUser = null;
+let isLoadingCharacter = false;
+let saveTimeout = null;
+
+function getCharacterData() {
+    return {
+        info: { ...character.info },
+        status: {
+            actualHealth: Number(character.status.actualHealth)
+        },
+        attributes: { ...character.attributes },
+        armor: { ...character.armor },
+        effectsValues: { ...character.effectsValues },
+        weapons: character.weapons.slice(1),
+        effects: character.effects.slice(1),
+        skills: character.skills.slice(1),
+        inventory: character.inventory.slice(1),
+        description: character.description
+    };
+}
+
+async function saveCharacter() {
+    if (!currentUser) return;
+
+    const sheetRef = doc(
+        db,
+        "users",
+        currentUser.uid,
+        "sheets",
+        "main"
+    );
+
+    try {
+        await setDoc(sheetRef, getCharacterData());
+        console.info("Ficha salva.");
+    } catch (error) {
+        console.error("Erro ao salvar ficha:", error);
+    }
+}
+
+function scheduleSave() {
+    if (!currentUser || isLoadingCharacter) return;
+
+    clearTimeout(saveTimeout);
+
+    saveTimeout = setTimeout(() => {
+        saveCharacter();
+    }, 600);
+}
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Running
 
 setElementValues();
 updateCharacter();
-setPvToMax();
 
 form.addEventListener('submit', function (event) {
     event.preventDefault(); // Impede o envio do formulário
@@ -671,12 +741,6 @@ function saveArrayDatas(element, dataType) {
 
 }
 
-// FIX HP - Delete Later plz
-function setPvToMax() {
-    character.status.actualHealth = character.status.maxHealth;
-    setElementValues();
-}
-
 // New Dice Roll
 
 function diceRoll(diceAmount, isDamage, bonusValue = 0) {
@@ -895,3 +959,217 @@ function setEffectsData() {
 
     updateCharacter();
 }
+
+
+function restoreDynamicItems(data) {
+    const itemTypes = [
+        { key: "weapons", containerId: "weapons" },
+        { key: "skills", containerId: "skills" },
+        { key: "inventory", containerId: "inventory" },
+        { key: "effects", containerId: "effects" }
+    ];
+
+    for (const { key, containerId } of itemTypes) {
+        const container = form.querySelector(`#${containerId}`);
+        const addButton = container.parentElement.querySelector(".add-item-btn");
+
+        for (const itemData of data[key] ?? []) {
+            addButton.click();
+
+            const itemEl = container.querySelector(
+                `.container-item[data-index="${container.children.length}"]`
+            );
+
+            if (!itemEl) {
+                throw new Error(`Não foi possível restaurar o item: ${key}`);
+            }
+
+            const setField = (selector, value) => {
+                const field = itemEl.querySelector(selector);
+
+                if (field && value !== undefined) {
+                    field.value = value;
+                    field.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+            };
+
+            setField(".item-name", itemData.name);
+            setField(".dices", itemData.dices);
+            setField(".turns", itemData.turns);
+            setField(".select-option", itemData.option);
+            setField(".value", itemData.value);
+            setField(".item-description", itemData.description);
+        }
+    }
+}
+
+
+//---------------------------------------------------------------------------------
+
+
+const authPanel = document.querySelector("#auth-panel");
+const authForm = document.querySelector("#auth-form");
+const authEmail = document.querySelector("#auth-email");
+const authPassword = document.querySelector("#auth-password");
+const authMessage = document.querySelector("#auth-message");
+
+const userPanel = document.querySelector("#user-panel");
+const userEmail = document.querySelector("#user-email");
+const loginForm = document.querySelector("#form-character");
+
+document.querySelector("#login-btn").addEventListener("click", () => {
+    authPassword.setAttribute("autocomplete", "current-password");
+});
+
+authForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    try {
+        await signInWithEmailAndPassword(
+            auth,
+            authEmail.value.trim(),
+            authPassword.value
+        );
+
+        authMessage.textContent = "";
+    } catch (error) {
+        authMessage.textContent = "Não foi possível entrar. Verifique o e-mail e a senha.";
+        console.error("Erro de login:", error.code);
+    }
+});
+
+document.querySelector("#register-btn").addEventListener("click", async () => {
+    try {
+        await createUserWithEmailAndPassword(
+            auth,
+            authEmail.value.trim(),
+            authPassword.value
+        );
+
+        authMessage.textContent = "";
+    } catch (error) {
+        authMessage.textContent =
+            error.code === "auth/email-already-in-use"
+                ? "Este e-mail já possui uma conta."
+                : error.code === "auth/weak-password"
+                    ? "A senha precisa ter pelo menos 6 caracteres."
+                    : "Não foi possível criar a conta. Verifique os dados.";
+
+        console.error("Erro de cadastro:", error.code);
+    }
+});
+
+document.querySelector("#logout-btn").addEventListener("click", async () => {
+    try {
+        await signOut(auth);
+    } catch (error) {
+        authMessage.textContent = "Não foi possível sair da conta.";
+        console.error("Erro ao sair:", error.code);
+    }
+});
+
+
+onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+
+    authPanel.classList.toggle("hidden", Boolean(user));
+    userPanel.classList.toggle("hidden", !user);
+
+    userEmail.textContent = user?.email ?? "";
+    authMessage.textContent = "";
+
+    if (!user) {
+        form.classList.add("hidden");
+        header.classList.add("hidden")
+        return;
+    }
+
+    form.classList.add("hidden");
+    header.classList.add("hidden")
+
+    try {
+        await loadCharacter(user);
+        form.classList.remove("hidden");
+        header.classList.remove("hidden");
+    } catch {
+        authMessage.textContent =
+            "Não foi possível carregar a ficha. Verifique a conexão e as regras do Firestore.";
+    }
+});
+
+
+
+async function loadCharacter(user) {
+    isLoadingCharacter = true;
+
+    try {
+        const sheetRef = doc(db, "users", user.uid, "sheets", "main");
+        const snapshot = await getDoc(sheetRef);
+
+        // Limpa as listas da interface antes de reconstruí-las.
+        for (const id of ["weapons", "skills", "inventory", "effects"]) {
+            form.querySelector(`#${id}`).replaceChildren();
+        }
+
+        if (snapshot.exists()) {
+            const data = snapshot.data();
+
+            Object.assign(character.info, data.info ?? {});
+            Object.assign(character.status, data.status ?? {});
+            Object.assign(character.attributes, data.attributes ?? {});
+            Object.assign(character.armor, data.armor ?? {});
+            Object.assign(character.effectsValues, data.effectsValues ?? {});
+
+            character.description = data.description ?? "";
+
+            character.weapons = [];
+            character.skills = [];
+            character.inventory = [];
+            character.effects = [];
+
+            charNameEl.value = character.info.name;
+            charLevelEl.value = character.info.level;
+
+            armorNameEl.value = character.armor.name;
+            armorValueEl.value = character.armor.value;
+            armorDescriptionEl.value = character.armor.description;
+
+            descriptionEl.value = character.description;
+
+            restoreDynamicItems(data);
+
+            setEffectsData();
+            updateCharacter();
+        } else {
+            // Primeira ficha desta conta: mantém os valores iniciais.
+            character.weapons = [];
+            character.skills = [];
+            character.inventory = [];
+            character.effects = [];
+
+            setElementValues();
+            updateCharacter();
+        }
+
+        await saveCharacter();
+    } catch (error) {
+        console.error("Erro ao carregar ficha:", error);
+        throw error;
+    } finally {
+        isLoadingCharacter = false;
+    }
+}
+
+
+form.addEventListener("change", scheduleSave);
+
+form.addEventListener("click", (event) => {
+    if (
+        event.target.closest(".add-item-btn") ||
+        event.target.closest(".action-btn") ||
+        event.target.closest("#set-pv-btn") ||
+        event.target.closest("#next-turn")
+    ) {
+        scheduleSave();
+    }
+});

@@ -700,6 +700,10 @@ div.value-big {
     font-weight: bold;
 }
 
+#auth-message {
+    font-family: "MedievalSharp";
+}
+
 @media screen and (max-width: 750px) {
     :root {
         --form-grid-template-column: 1fr;

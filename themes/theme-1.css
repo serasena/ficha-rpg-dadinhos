@@ -1,0 +1,659 @@
+
+/* Theme 1 — Tartaruguinha */
+
+
+/* Colors */
+
+:root {
+    /* Background */
+    --body-background-color: #899779;
+
+    /* Header */
+    --header-background-color: #F9EDDC;
+    --header-margin: 12px auto 23px;
+
+    /* Character Sheet */
+    --form-background-color: #879169;
+
+    /* Cards */
+    --form-item-background-color: #F9EDDC;
+    --form-item-border: 3px solid #4B5734;
+    --form-item-border-radius: 1rem;
+
+    /* Typography */
+    --main-title-font-color: #3e5034;
+    --form-item-title-font-color: #3e5034;
+}
+
+
+/* Background */
+
+html {
+    background-color: var(--body-background-color);
+}
+
+body {
+    background-color: transparent;
+    isolation: isolate;
+    position: relative;
+    padding-bottom: 45px;
+}
+
+
+/* Background Image */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    top: -10vh;
+    left: 50%;
+
+    width: min(1300px, 110vw);
+    height: 120vh;
+
+    transform: translateX(-50%);
+
+    /* Image */
+    background-image: url("../assets/backgrounds/Background.png");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Border and Shadow */
+    border: 4px solid #4B5734;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px #1533144D;
+
+    /* Layer */
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+/* Header and Character Sheet */
+
+.character-header,
+#form-character {
+    position: relative;
+    top: 25px;
+
+    border: 3px solid #4B5734;
+    border-radius: 20px;
+}
+
+.character-header {
+    overflow: hidden;
+}
+
+#form-character {
+    box-shadow: 0 8px 25px rgba(62, 80, 52, 0.20);
+    padding: 20px;
+}
+
+
+/* Header Decorations */
+
+.character-header::before,
+.character-header::after {
+    content: "";
+    position: absolute;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    pointer-events: none;
+    z-index: 2;
+}
+
+
+/* Left Leaf Decoration */
+
+.character-header::before {
+    width: 230px;
+    height: 100px;
+
+    left: 15px;
+    bottom: 15px;
+
+    background-image: url("../assets/details/leaftitle.png");
+}
+
+
+/* Right Turtle Decoration */
+
+.character-header::after {
+    width: 180px;
+    height: 120px;
+
+    right: 16px;
+    bottom: 5px;
+
+    background-image: url("../assets/details/turtle.png");
+}
+
+
+/* Header Content */
+
+.character-header .main-title,
+.character-header #turn-controls {
+    position: relative;
+    z-index: 1;
+
+}
+
+/* Turn Controls */
+
+#turn-controls {
+    width: 80%;
+    padding: 5px 10px;
+    margin: 0 auto;
+}
+
+/* Status and Attributes */
+
+.value-big,
+div.value-big {
+    background-color: #E8E0C6;
+    border: 2px solid #D9D0B2;
+    border-radius: 18px;
+    color: #3e5034;
+
+    width: 58px;
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#character-attributes .item.attribute {
+    border: 1px solid #BEB69C;
+    border-radius: 22px;
+    padding: 18px 12px;
+}
+
+#character-info .item {
+    border: 1px solid #BEB69C;
+    border-radius: 18px;
+    padding: 14px 10px;
+}
+
+
+/* Add and Expand Buttons */
+
+.add-item-btn,
+.expand-btn {
+    background-color: #D7D3B1;
+    border: 1px solid #4A5030;
+    border-radius: 50%;
+    color: #3e5034;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.6rem;
+    font-weight: bold;
+    cursor: pointer;
+
+    box-shadow: 0 3px 6px rgba(62, 80, 52, 0.18);
+    transition: background-color 0.1s, transform 0.1s;
+}
+
+.add-item-btn:hover,
+.expand-btn:hover {
+    background-color: #bcc98f;
+    transform: scale(1.05);
+}
+
+.expand-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+}
+
+
+/* Button Spacing */
+
+.form-item.effects,
+.form-item.weapons,
+.form-item.skills,
+.form-item.inventory {
+    gap: 2px;
+}
+
+
+/* Character Name */
+
+.name-input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid #B8B797;
+    color: #3E5034;
+    padding-left: 40px;
+padding-right: 40px;
+}
+
+.name-input:hover,
+.name-input:focus,
+.name-input:active {
+    border: none;
+    border-bottom: 3px solid #657553;
+}
+
+/* Character Name Leaves */
+
+.form-item.name {
+    position: relative;
+}
+
+.form-item.name::before,
+.form-item.name::after {
+    content: "";
+    position: absolute;
+
+    width: 25px;
+    height: 30px;
+
+    background-image: url("../assets/details/leaf.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    top: 50%;
+    pointer-events: none;
+}
+
+/* Left Leaf */
+
+.form-item.name::before {
+    left: 12px;
+    transform: translateY(-50%);
+}
+
+/* Right Leaf */
+
+.form-item.name::after {
+    right: 12px;
+    transform: translateY(-50%) scaleX(-1);
+}
+
+
+/* Item Names */
+
+.item-name {
+    background-color: #F9F0E1;
+    border: 1px solid #ADA082;
+    border-radius: 12px;
+    color: #3E5034;
+}
+
+.armor-name,
+#character-inventory .item-name {
+    width: 300px;
+    height: 46px;
+    font-size: 16px;
+    padding: 8px;
+}
+
+#character-inventory .container-subitem {
+    transform: translateX(-25px);
+}
+
+
+/* Number Inputs */
+
+#set-pv-value,
+.armor-value {
+    background-color: #F9F0E1;
+    border: 1px solid #B8B797;
+    border-radius: 15px;
+    color: #3E5034;
+
+    width: 50px;
+    height: 46px;
+
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Armor Number */
+
+#character-armor .armor-value {
+    background-color: #F9EFDF;
+}
+
+/* Dynamic Numbers */
+
+#character-effects input[type="number"],
+#character-weapons input[type="number"],
+#character-skills input[type="number"] {
+    background-color: #F9F0E1;
+    border: 1px solid #ADA082;
+    border-radius: 12px;
+    color: #3E5034;
+
+    width: 40px;
+    height: 36px;
+    padding: 4px;
+
+    font-size: 16px;
+    text-align: center;
+}
+
+
+/* Effect Select */
+
+#character-effects select {
+    background-color: #F9F0E1;
+    border: 1px solid #B8B797;
+    border-radius: 12px;
+    color: #3E5034;
+
+    height: 36px;
+    padding: 4px 8px;
+
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+/* Description Textareas */
+
+.armor-description,
+.item-description,
+.description-value {
+    background-color: #F9F0E1;
+    border: 1px solid #ADA082;
+    border-radius: 12px;
+    color: #3E5034;
+
+    padding: 10px;
+    font-size: 18px;
+}
+
+
+/* Item Dividers */
+
+.container-item {
+    border-bottom: 1px dashed #657553;
+    padding-bottom: 0;
+}
+
+.container-subitem {
+    padding-bottom: 2px;
+}
+
+#character-effects .container-item,
+#character-weapons .container-item,
+#character-skills .container-item {
+    padding-bottom: 12px;
+}
+
+.armor-container {
+    border-bottom: none;
+}
+
+
+/* Bottom Spacing */
+
+#character-inventory #inventory,
+#character-effects #effects,
+#character-weapons #weapons,
+#character-skills #skills {
+    margin-bottom: 10px;
+}
+
+
+/* Input Focus */
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid #83a35e;
+    outline-offset: 0;
+}
+
+
+/* Next and Previous Round Buttons */
+
+#next-turn,
+#rewind-turn {
+    width: 260px;
+    height: 70px;
+
+    background-image: url("../assets/buttons/nextroundbutton.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+
+    border: none;
+    box-shadow: none;
+
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+/* Calculate Button */
+
+#set-pv-btn {
+    width: 200px;
+    height: 46px;
+
+    background-image: url("../assets/buttons/nextroundbutton.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+
+    border: none;
+    box-shadow: none;
+
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+/* Roll Button */
+
+.roll-btn {
+    width: 52px;
+    height: 35px;
+
+    background-image: url("../assets/buttons/rollbutton.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+
+    border: none;
+    box-shadow: none;
+
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+/* Remove Item Button */
+
+.container-item > .action-btn {
+    width: 200px;
+    height: 50px;
+
+    background-image: url("../assets/buttons/nextroundbutton.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+
+    border: none;
+    box-shadow: none;
+
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.container-item > .action-btn:hover {
+    background-color: transparent;
+}
+
+
+/* Image Buttons */
+
+#next-turn,
+#rewind-turn,
+#set-pv-btn,
+.roll-btn,
+.container-item > .action-btn {
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Button Hover Effects */
+
+#next-turn,
+#rewind-turn,
+#set-pv-btn,
+.roll-btn,
+.container-item > .action-btn {
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Round, Calculate and Remove Buttons */
+
+#next-turn:hover,
+#rewind-turn:hover,
+#set-pv-btn:hover,
+.container-item > .action-btn:hover {
+    background-image: url("../assets/buttons/nextroundbuttonhover.png");
+    background-color: transparent;
+
+    transform: scale(1.05);
+    filter: drop-shadow(0 5px 6px #4B5231);
+}
+
+/* Roll Button */
+
+.roll-btn:hover {
+    background-image: url("../assets/buttons/rollbuttonhover.png");
+    background-color: transparent;
+
+    transform: scale(1.08);
+    filter: drop-shadow(0 4px 5px #4B5231);
+}
+
+
+/* Title Decorations */
+
+#form-character .item-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+#form-character .item-title::before,
+#form-character .item-title::after {
+    content: "";
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+
+    background-image: url("../assets/details/leaf.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#form-character .item-title::after {
+    transform: scaleX(-1);
+}
+
+
+/* Dice Roll Window */
+
+#dice-roll {
+    background-color: #25331A99;
+    z-index: 1000;
+}
+
+#dice-roll .dice-container {
+    background-color: #F9EDDC;
+    border: 3px solid #4B5734;
+    border-radius: 20px;
+
+    width: min(300px, 90vw);
+    padding: 25px;
+
+    color: #3E5034;
+    box-shadow: 0 8px 25px #1533144D;
+}
+
+
+/* Dice Numbers */
+
+#dice-roll .dice-image {
+    background-color: #E8E0C6;
+    border: 2px solid #D9D0B2;
+    border-radius: 18px;
+}
+
+
+/* Dice Divider */
+
+#dice-roll hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #BEB69C;
+}
+
+
+/* Close Button */
+
+#dice-roll .action-btn {
+    width: 180px;
+    height: 50px;
+    align-self: center;
+
+    background-image: url("../assets/buttons/nextroundbutton.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+
+    border: none;
+    box-shadow: none;
+    padding: 0;
+
+    color: #FFFFFF;
+    font-size: 16px;
+    cursor: pointer;
+
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+#dice-roll .action-btn:hover {
+    background-image: url("../assets/buttons/nextroundbuttonhover.png");
+    background-color: transparent;
+
+    transform: scale(1.05);
+    filter: drop-shadow(0 5px 6px #4B5231);
+}
+
+
+

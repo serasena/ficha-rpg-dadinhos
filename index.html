@@ -2,6 +2,8 @@
 <html lang="en">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="theme-selector.css">
+<link id="active-theme" rel="stylesheet" href="themes/theme-1.css">
 </link>
 
 <head>
@@ -13,8 +15,27 @@
 </head>
 
 <body>
+<button id="open-theme-btn" type="button">Escolher Tema</button>
+    <!-- ୨୧ Theme Selection Panel -->
 
-    <section id="auth-panel">
+<div id="theme-panel" class="hidden">
+    <div class="theme-container">
+
+        <h2>Escolha seu Tema</h2>
+
+     <div class="theme-options">
+    <button type="button" data-theme="default" aria-label="Tema Padrão"></button>
+    <button type="button" data-theme="1" aria-label="Tema 1 — Tartaruguinha"></button>
+    <button type="button" data-theme="2" aria-label="Tema 2"></button>
+    <button type="button" data-theme="3" aria-label="Tema 3"></button>
+    <button type="button" data-theme="4" aria-label="Tema 4"></button>
+</div>
+
+        <button id="close-theme-btn" type="button">Fechar</button>
+
+    </div>
+</div>
+<section id="auth-panel">
         <h2 class="item-title">Acessar Conta</h2>
 
         <form id="auth-form">
@@ -185,6 +206,8 @@
         <button type="button">Mudar Icone</button>
     </div> 
 -->
-<script type="module" src="./script.js"></script>
+    <script type="module" src="./script.js"></script>
+    <script src="./themes.js"></script>
 
+</body>
 </html>

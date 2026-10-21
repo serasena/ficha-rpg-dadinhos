@@ -357,7 +357,7 @@ itemContainers.forEach(container => {
                 skillRollBtn.addEventListener("click", () => {
 
                     indexItem = skillEl.dataset.index;
-                    weaponEl = container.querySelector(`div[data-index='${indexItem}']`);
+                    skillEl = container.querySelector(`div[data-index='${indexItem}']`);
 
                     diceRoll(character.skills[indexItem].dices, true);
 
@@ -1070,6 +1070,19 @@ document.querySelector("#logout-btn").addEventListener("click", async () => {
 
 
 onAuthStateChanged(auth, async (user) => {
+
+    // pra eu nao ter q ficar logando
+    if (location.hostname === "127.0.0.1" || location.hostname === "localhost") {
+        authPanel.classList.add("hidden");
+        userPanel.classList.add("hidden");
+
+        form.classList.remove("hidden");
+        header.classList.remove("hidden");
+
+        return;
+    }
+    // pra eu nao ter q ficar logando
+
     currentUser = user;
 
     authPanel.classList.toggle("hidden", Boolean(user));

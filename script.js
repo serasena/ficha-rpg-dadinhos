@@ -674,7 +674,7 @@ function setElementValues() {
   charNameEl.value = character.info.name;
   charLevelEl.value = character.info.level;
 
-  actualHealthEl.innerHTML = `<span class="${getClassByPvValue(character.status.actualHealth, character.status.maxHealth)}">${character.status.actualHealth}</span>`;
+  actualHealthEl.innerHTML = `<span class="health center ${getClassByPvValue(character.status.actualHealth, character.status.maxHealth)}">${character.status.actualHealth}</span>`;
   healthInfoEl.textContent = `PV: ${character.status.actualHealth}/${character.status.maxHealth}\n`;
 
   protectionEl.textContent = character.status.protection;

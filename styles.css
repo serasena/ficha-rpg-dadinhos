@@ -414,9 +414,7 @@ body {
 }
 
 .health {
-    width: 4rem;
-    height: 3rem;
-
+    font-family: var(--value-big-font-family);
     font-size: 2.3rem;
 }
 
